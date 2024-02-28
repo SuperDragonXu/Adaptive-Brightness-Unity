@@ -9,4 +9,4 @@ The room looks dark from outside.
 When the camera enters the room, it looks brighter.
 this repo simulates this effect in Unity using compute shader and post processing.
 
-The post processing effect works with a grab pass. To enable it, the adaptive brightness effect, you first have to add the Grab Color pass into the render feature.
+The post processing effect works with a grab pass. To enable it, you first have to add the Grab Color pass into the renderer. You can refer to the given renderer in AdaptiveBrightness/AdaptiveBrightnessRenderer.asset.
