@@ -1,0 +1,32 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel avgBrightness
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+Texture2D<float4> CameraColor;
+
+int width, height;
+
+AppendStructuredBuffer<float> result;
+
+float GetL(float3 rgb)
+{
+    float Min = min(rgb.r, min(rgb.g, rgb.b));
+    float Max = max(rgb.r, max(rgb.g, rgb.b));
+    return (Max + Min) / 2;
+}
+
+[numthreads(1,1,1)]
+void avgBrightness(uint3 id : SV_DispatchThreadID, uint3 gid: SV_GroupID)
+{      
+    float res = 0;
+    int2 offset = int2(gid.x * width, gid.y * height);    
+    for (int i = 0; i < width; i++)
+    {        
+        for (int j = 0; j < height; j++)
+        {
+            res += GetL(CameraColor[int2(i, j) + offset].xyz);
+        }
+    }
+    result.Append(res / (width * height));    
+}
